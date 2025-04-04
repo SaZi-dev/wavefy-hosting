@@ -1,0 +1,373 @@
+html, body {
+    font-family: Arial, sans-serif;
+    background-color: #111827;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden; /* Prevent horizontal scroll bar */
+    overflow-y: scroll; /* or 'auto' for automatic scrollbars */
+    scrollbar-width: none; /* For Firefox */
+    height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+header {
+    background-color: #0F1E33;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Higher z-index to ensure the header stays on top */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.logo img {
+    margin-right: 2rem;
+    margin-left: 2rem;
+    width: 70px;
+    height: 70px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-button {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 20px; /* Adjust spacing as needed */
+}
+
+.nav-button:hover {
+    color: #818cf8;
+}
+
+/* Style for the profile display */
+.profile-display {
+    margin-left: auto;
+    margin-right: 5rem;
+    text-align: left;
+}
+
+.profile-display p {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    max-width: 2000px;
+    margin-top: 10rem;
+    justify-content: space-between;
+    gap: 50px; /* Increase the space between the two rectangles */
+}
+
+.section {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px; /* Reduced padding for better fixed size */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Server Configuration Section */
+.server-info {
+    width: 600px; /* Fixed width */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adds space between child elements */
+}
+
+.server-details {
+    background-color: #111827;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.server-details p {
+    margin: 10px 0;
+}
+
+/* Ensure all server buttons are the same size */
+.server-details .server-button {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+/* Server Properties Section */
+.server-properties {
+    background-color: #111827;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 93%; /* Fixed width */
+}
+
+.server-properties label {
+    display: block;
+    margin: 10px 0 10px;
+    font-weight: bold;
+}
+
+/* Align checkboxes with text */
+.server-properties .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.server-properties .checkbox-container label {
+    margin: 0;
+    flex: 1;
+}
+
+.server-properties select,
+.server-properties input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.server-properties .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.server-properties .checkbox-container label {
+    margin: 0;
+    flex: 1;
+}
+
+.server-properties input[type="checkbox"] {
+    width: auto; /* Keep checkboxes compact */
+    margin-left: 10px;
+}
+
+.server-properties input[type="number"] {
+    width: 97%; /* For slots input */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #6366f1;
+    border-radius: 5px;
+}
+
+/* Add spacing for the new properties */
+.server-properties .new-property-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.server-properties .new-property-container label {
+    margin: 0;
+    flex: 1;
+}
+
+.server-properties .new-property-container select {
+    width: 95%; /* Dropdowns for pvp, fly, etc. */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Console Section */
+.console {
+    width: 600px; /* Fixed width */
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.console-output {
+    background-color: #111827;
+    color: #00ff00;
+    height: 400px; /* Fixed height */
+    overflow-y: auto;
+    padding: 10px;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+/* Command line styling */
+.console-command {
+    color: #ffff00; /* Yellow color for commands */
+    font-weight: bold;
+}
+
+/* Log line styling */
+.log-line {
+    color: #00ff00; /* Green color for logs */
+}
+
+/* Response line styling */
+.response-line {
+    color: #00ffff; /* Cyan color for responses */
+}
+
+/* Error line styling */
+.error-line {
+    color: #ff0000; /* Red color for errors */
+}
+
+#console-input {
+    width: 100%;
+    padding: 8px;
+    background: #111827;
+    border: 1px solid #6366f1;
+    color: #0f0;
+    font-family: monospace;
+    margin-top: 10px;
+}
+
+.console-status {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+/* Add these CSS classes */
+.log-time { color: #888; }
+.log-info { color: #00ff00; }
+.log-warn { color: #ffff00; }
+.log-error { color: #ff0000; }
+.log-line { white-space: pre; }
+
+/* Copy IP Button */
+#copy-ip-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+#copy-ip-button:hover {
+    background-color: #45a049;
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #111827;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #6366f1;
+}
+
+.server-button {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    margin: 5px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.server-button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.checkbox-container label {
+    margin-right: 10px;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.success { background: #4CAF50; }
+.error { background: #f44336; }
+
+.loader {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Delete Button */
+#deleteButton {
+    padding: 10px 0px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333; /* Red background */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#deleteButton:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}

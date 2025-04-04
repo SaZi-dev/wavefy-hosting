@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wavefy-hosting</title>
+    <link rel="stylesheet" href="main.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://i.postimg.cc/QtVB0bH6/a-simple-modern-logo-with-a-cube-theme-black-and-white-colors.jpg" alt="Logo">
+            <h1>Wavefy-hosting</h1>
+        </div>
+        <nav>
+            <a href="main.html" class="nav-button">Main page</a>
+            <a href="creating_server.html" class="nav-button">Create server</a>
+            <a href="server_configuration.html" class="nav-button">My server</a>
+        </nav>
+    </header>
+    <main>
+        <div class="info-container">
+            <div class="tabs">
+                <button class="tab-link active" onclick="openTab(event, 'About')">About</button>
+                <button class="tab-link" onclick="openTab(event, 'PrivacyPolicy')">Privacy Policy</button>
+                <button class="tab-link" onclick="openTab(event, 'TermsOfService')">Terms of Service</button>
+                <button class="tab-link" onclick="openTab(event, 'Contact')">Contact</button>
+            </div>
+            <div id="About" class="tab-content active">
+                <h2>About Wavefy-hosting</h2>
+                 <p>Welcome to Wavefy-Hosting, your ultimate destination for free Minecraft server hosting! </p>
+             
+                 <ul>
+                    <li> We are passionate gamers and tech enthusiasts dedicated to providing a seamless and high-performance hosting experience for Minecraft enthusiasts worldwide.
+                        <br>
+                        <br>
+                    <li> At Wavefy-Hosting, we believe that everyone should have the opportunity to create and explore their own Minecraft worlds without financial barriers. That's why we offer completely free server hosting with no hidden fees or restrictions. Whether you're a casual player or a dedicated community leader, our robust hosting solutions cater to all your needs.
+                 </ul>
+
+                 <p> Why Choose Us? </p>
+                <ul>
+                    <li> Reliable Performance: Our state-of-the-art infrastructure ensures your server runs smoothly with minimal downtime, so you can enjoy uninterrupted gameplay.
+                        <br>
+                        <br>
+                    <li> User-Friendly Interface: Our intuitive control panel makes it easy to manage your server, customize settings, and install plugins with just a few clicks.
+                        <br>
+                        <br>
+                    <li> 24/7 Support: Our dedicated support team is always ready to assist you with any questions or issues you may encounter, ensuring a hassle-free hosting experience.
+                        <br>
+                        <br>
+                    <li> Community Focused: We are committed to fostering a vibrant and inclusive community where players can connect, collaborate, and share their Minecraft adventures.
+                        <br>
+                        <br>
+                </ul>  
+                <p> Join the Wavefy-Hosting family today and experience the freedom to build, explore, and play in your very own Minecraft server. Let's create something amazing together! </p>  
+            </div>
+            <div id="PrivacyPolicy" class="tab-content">
+                <h1>Privacy Policy</h1>
+    <p><strong>Effective Date:</strong> [21.03.2025]</p>
+
+    <p>Welcome to Wavefy-Hosting! At Wavefy-Hosting, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your information while you use our website and services related to hosting Minecraft servers.</p>
+
+    <h2>Information We Collect</h2>
+    <ul>
+        <li><strong>Personal Information:</strong> Such as your name, email address, and payment details when you register or make purchases.</li>
+        <li><strong>Minecraft Account Data:</strong> Such as your Minecraft username to facilitate server hosting.</li>
+        <li><strong>Technical Information:</strong> Including your IP address, browser type, and device information for analytics and security purposes.</li>
+        <li><strong>Cookies:</strong> Small text files stored on your device to enhance your experience (e.g., keeping you logged in).</li>
+    </ul>
+
+    <h2>How We Use Your Information</h2>
+    <ul>
+        <li>Provide and manage our Minecraft hosting services.</li>
+        <li>Process payments and send billing communications.</li>
+        <li>Respond to customer support inquiries and technical issues.</li>
+        <li>Enhance and personalize your experience on our website.</li>
+        <li>Maintain security and prevent fraudulent activities.</li>
+    </ul>
+
+    <h2>How We Share Your Information</h2>
+    <p>We do not sell, trade, or share your personal information with third parties except in the following cases:</p>
+    <ul>
+        <li><strong>Service Providers:</strong> Trusted partners who assist with payment processing, customer support, or server maintenance.</li>
+        <li><strong>Legal Requirements:</strong> When required to comply with applicable laws, regulations, or legal processes.</li>
+    </ul>
+
+    <h2>Data Security</h2>
+    <p>We implement a variety of security measures to ensure your personal information is safe. However, no transmission over the internet can be guaranteed 100% secure, so we encourage caution when sharing sensitive information.</p>
+
+    <h2>Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Access, update, or delete your personal information by contacting us.</li>
+        <li>Opt out of cookies or data collection practices as permitted by law.</li>
+    </ul>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted here, and we encourage you to review this page periodically.</p>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+    <p>Email: [dominik.hrubo@student.ssnd.sk]</p>
+    <p>Address: [Trenčianská Teplá]</p>
+            </div>
+            <div id="TermsOfService" class="tab-content">
+                <h2>Terms of Service</h2>
+                <p>By using our services, you agree to the following terms...</p>
+            </div>
+            <div id="Contact" class="tab-content">
+                <h2>Contact Us</h2>
+                <p>Feel free to reach out to us via the following methods:</p>
+                <ul>
+                    <li>Email: dominik.hrubo@student.ssnd.sk</li>
+                    <li>Phone: +421 950 711 561</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Wavefy-hosting. All rights reserved.</p>
+    </footer>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Set default tab to open
+        document.getElementById("About").style.display = "block";
+    </script>
+</body>
+</html>

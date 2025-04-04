@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Configuration</title>
+    <link rel="stylesheet" href="server_configuration.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://i.postimg.cc/QtVB0bH6/a-simple-modern-logo-with-a-cube-theme-black-and-white-colors.jpg" alt="Logo">
+            <h1>Wavefy-hosting</h1>
+        </div>
+        <nav>
+            <a href="main.html" class="nav-button">Main page</a>
+            <a href="creating_server.html" class="nav-button">Create server</a>
+            <a href="server_configuration.html" class="nav-button">My server</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="server-info section">
+            <h2>Server Configuration</h2>
+            <div class="server-details">
+                <p><strong>Server name:</strong> <span id="server-name"></span></p>
+                <p><strong>Minecraft version:</strong> <span id="server-version"></span></p>
+                <p><strong>Status:</strong> <span id="server-status">Loading...</span></p>
+                <button id="start-button" class="server-button">Start</button>
+                <button id="stop-button" class="server-button">Stop</button>
+                <button id="restart-button" class="server-button">Restart</button>
+                <button id="deleteButton" class="server-button">Delete Server</button>
+            </div>
+            <div class="server-properties section">
+                <h3>Server Properties</h3>
+                <label for="gamemode">Gamemode:</label>
+                <select id="gamemode">
+                    <option value="survival">Survival</option>
+                    <option value="creative">Creative</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="spectator">Spectator</option>
+                </select>
+                <div class="checkbox-container">
+                    <label for="online-mode">Online Mode:</label>
+                    <input type="checkbox" id="online-mode">
+                </div>
+                <div class="checkbox-container">
+                    <label for="whitelist">Whitelist:</label>
+                    <input type="checkbox" id="whitelist">
+                </div>
+                <label for="spawn-protection">Spawn Protection:</label>
+                <input type="number" id="spawn-protection" value="0" min="0">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="peaceful">Peaceful</option>
+                    <option value="easy">Easy</option>
+                    <option value="normal">Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+
+                <label for="slots">Slots (max 20):</label>
+                <input type="number" id="slots" value="20" min="1" max="20">
+                
+                <div class="checkbox-container">
+                    <label for="pvp">PvP:</label>
+                    <input type="checkbox" id="pvp">
+                </div>
+                <div class="checkbox-container">
+                    <label for="fly">Fly:</label>
+                    <input type="checkbox" id="fly">
+                </div>
+                <div class="checkbox-container">
+                    <label for="commandblocks">Command Blocks:</label>
+                    <input type="checkbox" id="commandblocks">
+                </div>
+                <div class="checkbox-container">
+                    <label for="monster">Monsters:</label>
+                    <input type="checkbox" id="monster">
+                </div>
+                <div class="checkbox-container">
+                    <label for="villagers">Villagers:</label>
+                    <input type="checkbox" id="villagers">
+                </div>
+                <div class="checkbox-container">
+                    <label for="nether">Nether:</label>
+                    <input type="checkbox" id="nether">
+                </div>
+                <div class="checkbox-container">
+                    <label for="animals">Animals:</label>
+                    <input type="checkbox" id="animals">
+                </div>
+                <div class="checkbox-container">
+                    <label for="force-gamemode">Force Gamemode:</label>
+                    <input type="checkbox" id="force-gamemode">
+                </div>                
+            </div>
+        </div>
+        <div class="console section">
+            <h3>Live Console</h3>
+            <div id="console-output" class="console-output"></div>
+            <input type="text" id="console-input" placeholder="Enter command">
+        </div>
+    </div>
+
+    <script>
+        // Global constants
+        const API_URL = 'http://173.249.28.254:3000';
+        const WS_URL = 'ws://173.249.28.254:8080';
+        const API_KEY = 'tvoj-secret-api-kluc';
+        const serverName = new URLSearchParams(window.location.search).get('name');
+        let consoleSocket;
+
+        // Initialize server info
+        document.getElementById('server-name').textContent = serverName;
+        document.getElementById('server-version').textContent = 
+            new URLSearchParams(window.location.search).get('version');
+
+        // WebSocket Console Handling
+        function connectConsole() {
+            consoleSocket = new WebSocket(`${WS_URL}?name=${serverName}`);
+
+            consoleSocket.onmessage = (event) => {
+                const output = document.getElementById('console-output');
+                const lines = event.data.split('\n').filter(line => line.trim());
+
+                lines.forEach(line => {
+                    const formattedLine = line
+                        .replace(/(\[\d{2}:\d{2}:\d{2}\])/g, '<span class="log-timestamp">$1</span>')
+                        .replace(/INFO/g, '<span class="log-info">INFO</span>')
+                        .replace(/WARN/g, '<span class="log-warn">WARN</span>')
+                        .replace(/ERROR/g, '<span class="log-error">ERROR</span>');
+                    
+                    output.innerHTML += `<div class="log-line">${formattedLine}</div>`;
+                });
+
+                output.scrollTop = output.scrollHeight;
+            };
+
+            consoleSocket.onclose = () => {
+                const checkServerStatus = async () => {
+                    try {
+                        const response = await fetch(`${API_URL}/server-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${API_KEY}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name: serverName })
+                        });
+                        const data = await response.json();
+                        if (data.status.toLowerCase() === 'online') {
+                            connectConsole();
+                        } else {
+                            setTimeout(checkServerStatus, 5000);
+                        }
+                    } catch (error) {
+                        setTimeout(checkServerStatus, 5000);
+                    }
+                };
+
+                setTimeout(checkServerStatus, 5000);
+            };
+        }
+
+        // Server Status Management
+        async function fetchServerStatus() {
+            try {
+                const response = await fetch(`${API_URL}/server-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: serverName })
+                });
+                
+                const data = await response.json();
+                const statusElement = document.getElementById('server-status');
+                const status = data.status.toLowerCase();
+
+                if (statusElement.textContent.toLowerCase() !== 'restarting' || status === 'online') {
+                    statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                }
+
+                updateButtonStates(status);
+            } catch (error) {
+                console.error('Error fetching server status:', error);
+            }
+        }
+
+        function updateButtonStates(status) {
+            const startButton = document.getElementById('start-button');
+            const restartButton = document.getElementById('restart-button');
+            const stopButton = document.getElementById('stop-button');
+
+            const normalizedStatus = status.toLowerCase();
+
+            startButton.disabled = normalizedStatus === 'online';
+            stopButton.disabled = normalizedStatus !== 'online';
+            restartButton.disabled = normalizedStatus !== 'online';
+
+            const buttons = [startButton, stopButton, restartButton];
+            buttons.forEach(btn => {
+                btn.style.opacity = btn.disabled ? 0.6 : 1;
+                btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
+            });
+        }
+
+        // Server Control Functions
+        async function manageServer(action) {
+            const button = document.getElementById(`${action}-button`);
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Processing...';
+            
+            try {
+                const response = await fetch(`${API_URL}/${action}-server`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: serverName })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+
+                if (action === 'restart') {
+                    document.getElementById('server-status').textContent = 'Restarting';
+                    updateButtonStates('restarting');
+                }
+
+                document.getElementById('console-output').innerHTML = '';
+
+                setTimeout(() => {
+                    connectConsole();
+                }, 5000);
+
+                alert(data.message);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            } finally {
+                button.textContent = originalText;
+                button.disabled = false;
+                updateButtonStates(document.getElementById('server-status').textContent.toLowerCase());
+            }
+        }
+
+        // Server Properties Management
+        const propertyMap = {
+            'gamemode': 'gamemode',
+            'difficulty': 'difficulty',
+            'spawn-protection': 'spawn-protection',
+            'online-mode': 'online-mode',
+            'whitelist': 'white-list',
+            'pvp': 'pvp',
+            'fly': 'allow-flight',
+            'commandblocks': 'enable-command-block',
+            'slots': 'max-players',
+            'monster': 'spawn-monsters',
+            'villagers': 'spawn-villagers',
+            'nether': 'allow-nether',
+            'animals': 'spawn-animals',
+            'force-gamemode': 'force-gamemode'
+        };
+
+        async function fetchServerProperties() {
+            try {
+                const response = await fetch(`${API_URL}/get-properties`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: serverName })
+                });
+                
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error);
+
+                Object.entries(propertyMap).forEach(([elementId, propertyKey]) => {
+                    const element = document.getElementById(elementId);
+                    const value = data.properties[propertyKey]?.toLowerCase();
+
+                    if (element.type === 'checkbox') {
+                        element.checked = propertyKey === 'online-mode' 
+                            ? value === 'false' 
+                            : value === 'true';
+                    } else {
+                        element.value = value;
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error loading properties:', error);
+            }
+        }
+
+        function updateServerProperties() {
+            const properties = {};
+            
+            Object.entries(propertyMap).forEach(([elementId, propertyKey]) => {
+                const element = document.getElementById(elementId);
+                properties[propertyKey] = element.type === 'checkbox'
+                    ? (propertyKey === 'online-mode' 
+                        ? !element.checked 
+                        : element.checked)
+                    : element.value;
+            });
+
+            fetch(`${API_URL}/update-properties`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: serverName,
+                    properties: properties
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Settings updated successfully!');
+                }
+            })
+            .catch(error => console.error('Error updating properties:', error));
+        }
+
+        // Event Listeners
+        document.getElementById('start-button').addEventListener('click', () => manageServer('start'));
+        document.getElementById('stop-button').addEventListener('click', () => manageServer('stop'));
+        document.getElementById('restart-button').addEventListener('click', () => manageServer('restart'));
+        document.getElementById('deleteButton').addEventListener('click', deleteServer);
+
+        document.getElementById('console-input').addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const command = e.target.value.trim();
+                if (!command) return;
+
+                const output = document.getElementById('console-output');
+                output.innerHTML += `<div class="console-command">> ${command}</div>`;
+                e.target.value = '';
+
+                try {
+                    const response = await fetch(`${API_URL}/send-command`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: serverName, command })
+                    });
+                    const data = await response.json();
+                    output.innerHTML += `<div class="response-line">${data.message}</div>`;
+                } catch (error) {
+                    output.innerHTML += `<div class="error-line">Error: ${error.message}</div>`;
+                }
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Delete Server Function
+        async function deleteServer() {
+            const confirmation = confirm("Are you sure you want to delete the server?");
+            if (confirmation) {
+                try {
+                    const response = await fetch(`${API_URL}/delete-server`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ name: serverName })
+                    });
+
+                    const data = await response.json();
+                    if (data.message) {
+                        alert(data.message);
+                        window.location.href = 'main.html';
+                    } else if (data.error) {
+                        throw new Error(data.error);
+                    }
+                } catch (error) {
+                    alert(`Error deleting server: ${error.message}`);
+                }
+            }
+        }
+
+        // Initialize everything
+        window.onload = () => {
+            connectConsole();
+            fetchServerStatus();
+            fetchServerProperties();
+            setInterval(fetchServerStatus, 5000);
+            
+            document.querySelectorAll('select, input').forEach(element => {
+                element.addEventListener('change', updateServerProperties);
+            });
+
+            updateButtonStates('loading');
+        };
+    </script>
+</body>
+</html>
