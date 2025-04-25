@@ -20,17 +20,14 @@
                 <div class="input-group">
                     <label for="nickname">Nickname:</label>
                     <input type="text" id="nickname" placeholder="Enter your nickname" required>
-                    <span id="nickname-error" class="error-message"></span>
                 </div>
                 <div class="input-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" placeholder="Enter your email" required>
-                    <span id="email-error" class="error-message"></span>
                 </div>
                 <div class="input-group">
                     <label for="password">Password:</label>
                     <input type="password" id="password" placeholder="Enter your password" required>
-                    <span id="password-error" class="error-message"></span>
                 </div>
                 <div class="button-container">
                     <button type="button" id="login-button">Log in</button>
@@ -41,83 +38,6 @@
         </div>
     </div>
 
-    <script>
-        // Function to validate email
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(String(email).toLowerCase());
-        }
-
-        // Login button event listener
-        document.getElementById('login-button').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!validateEmail(email)) {
-                document.getElementById('email-error').textContent = "Please enter a valid email.";
-                return;
-            } else {
-                document.getElementById('email-error').textContent = "";
-            }
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-                const responseMessage = document.getElementById('response-message');
-                if (response.ok) {
-                    responseMessage.textContent = 'Log in successful!';
-                    responseMessage.style.color = 'green';
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('email', data.email);
-                    localStorage.setItem('nickname', data.nickname);
-                    window.location.href = 'main.html'; // Redirect to main.html
-                } else {
-                    responseMessage.textContent = `Error: ${data.message}`;
-                    responseMessage.style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Error during login:', error);
-            }
-        });
-
-        // Signup button event listener
-        document.getElementById('signup-button').addEventListener('click', async () => {
-            const nickname = document.getElementById('nickname').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (!validateEmail(email)) {
-                document.getElementById('email-error').textContent = "Please enter a valid email.";
-                return;
-            } else {
-                document.getElementById('email-error').textContent = "";
-            }
-
-            try {
-                const response = await fetch('/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nickname, email, password })
-                });
-
-                const data = await response.json();
-                const responseMessage = document.getElementById('response-message');
-                if (response.ok) {
-                    responseMessage.textContent = 'Sign up successful! Please log in.';
-                    responseMessage.style.color = 'green';
-                } else {
-                    responseMessage.textContent = `Error: ${data.message}`;
-                    responseMessage.style.color = 'red';
-                }
-            } catch (error) {
-                console.error('Error during signup:', error);
-            }
-        });
-    </script>
+    <script src="auth.js"></script> <!-- External JS file -->
 </body>
 </html>
