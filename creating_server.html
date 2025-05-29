@@ -46,7 +46,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://173.249.28.254:3000';
+        const API_URL = 'http://173.249.28.254:3000';
         const API_KEY = 'tvoj-secret-api-kluc';
 
         document.getElementById('create-server-form').addEventListener('submit', async (e) => {
@@ -115,7 +115,7 @@
         async function handleResponse(response) {
             if (!response.ok) {
                 const errorData = await response.json().catch(() => null);
-                throw new Error(errorData?.error || `HTTPS Error ${response.status}`);
+                throw new Error(errorData?.error || `HTTP Error ${response.status}`);
             }
             return response.json();
         }

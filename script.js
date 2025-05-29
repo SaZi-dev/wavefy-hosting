@@ -1,5 +1,5 @@
 // Konfigurácia
-const API_URL = 'https://173.249.28.254:3000'; // URL tvojho API
+const API_URL = 'http://173.249.28.254:3000'; // URL tvojho API
 const API_KEY = 'tvoj-secret-api-kluc'; // Nahraď svojím API kľúčom
 
 // Funkcia na odoslanie požiadavky na vytvorenie servera
